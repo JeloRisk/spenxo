@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import ExpenseList from "../components/ExpenseList";
 
 export default function HomePage() {
   const [expenses, setExpenses] = useState([]);
@@ -91,7 +90,7 @@ export default function HomePage() {
         </button>
       </form>
 
-      {/* <ul className="space-y-2">
+      <ul className="space-y-2">
         {expenses.map((exp: any) => (
           <li key={exp._id} className="border p-2 rounded">
             <div className="font-medium">
@@ -105,16 +104,7 @@ export default function HomePage() {
             )}
           </li>
         ))}
-      </ul> */}
-                  {expenses.length != 0 ? (
-                      // create newe component
-                      <ExpenseList
-                          data={expenses}
-                          // viewItem={handleView}
-                      ></ExpenseList>
-                  ) : (
-                      <div>No Data Available</div>
-                  )}
+      </ul>
     </main>
   );
 }
