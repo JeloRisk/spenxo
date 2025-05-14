@@ -45,7 +45,7 @@ export default function HomePage() {
 
   return (
     <main className="p-4 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">ExpenseTrackr</h1>
+      <h1 className="text-2xl font-bold mb-4">Spenxo: Expense Tracking System</h1>
 
       <form onSubmit={handleSubmit} className="space-y-2 mb-6 border p-4 rounded">
         <input
