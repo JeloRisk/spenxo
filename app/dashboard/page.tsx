@@ -29,7 +29,7 @@ export default function HomePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.expenseName || !form.amount) return alert("Expense name and amount are required");
+    if (!form.category || !form.date || !form.amount) return alert("Date and amount are required");
     await fetch("/api/expenses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -53,7 +53,7 @@ export default function HomePage() {
           name="expenseName"
           value={form.expenseName}
           onChange={handleChange}
-          placeholder="Expense Name"
+          placeholder="Expense Name (Optional)"
           className="w-full border px-3 py-2 rounded"
         />
         <input
@@ -88,7 +88,7 @@ export default function HomePage() {
         />
         <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
           Add Expense
-        </button>
+        </button> 
       </form>
 
       {/* <ul className="space-y-2">
