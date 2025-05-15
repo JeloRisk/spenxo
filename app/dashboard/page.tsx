@@ -203,6 +203,7 @@ export default function HomePage() {
                       <ExpenseList
                           data={expenses}
                           // viewItem={handleView}
+                          onUpdate={fetchExpenses}
                       ></ExpenseList>
                   ) : (
                       <div>Loading...</div>
