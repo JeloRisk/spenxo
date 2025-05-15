@@ -97,8 +97,15 @@ export default function HomePage() {
               {exp.expenseName} — ${exp.amount.toFixed(2)}
             </div>
             <div className="text-sm text-gray-600">
-              {exp.category} | {new Date(exp.date).toLocaleDateString()}
-            </div>
+                {exp.category} |{" "}
+                {new Date(exp.date).toLocaleDateString("en-US", {
+                  weekday: "short",
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </div>
+
             {exp.description && (
               <p className="text-xs italic text-gray-500 mt-1">{exp.description}</p>
             )}
