@@ -12,9 +12,7 @@ const Navigation: React.FC<NavigationProps> = ({ isExpanded, toggleSidebar }) =>
   return (
     // px-4 sm:px-6 md:px-20 navbar
     <nav
-      className="fixed top-0 left-0 right-0  bg-primaryColor border-b border-b-gray-400  flex justify-start items-center  items-center z-20 
-    
-    h-[60px]">
+      className="fixed top-0 left-0 right-0  bg-primaryColor border-b border-b-gray-400  flex justify-start items-center z-20 h-[60px]">
       {/* {isExpanded && <h1 className='text-xl font-bold text-white'>INPPO</h1>} */}
       <div className="flex w-16 justifify-center">
         <div className="flex items-center px-2 py-2 m-auto">
