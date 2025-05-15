@@ -12,8 +12,8 @@ import giftIcon from "../icons-cat/gift.svg";
 import moneyIcon from "../icons-cat/money.svg";
 
 const categoryStyles = {
-    1: { icon: rentIcon, color: "#4A90E2" }, // Rent
-    2: { icon: utilitiesIcon, color: "#FFD700" }, // Utilities
+    '1': { icon: rentIcon, color: "#4A90E2" }, // Rent
+    '2': { icon: utilitiesIcon, color: "#FFD700" }, // Utilities
     3: { icon: transportationIcon, color: "#FF8C00" }, // Transportation
     4: { icon: foodIcon, color: "#FF6347" }, // Food
     5: { icon: healthIcon, color: "#32CD32" }, // Health/Medical
