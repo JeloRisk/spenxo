@@ -47,7 +47,7 @@ function ExpenseList({ data, onDelete, onEdit, onUpdate }: ExpenseListProps) {
       .then((res) => {
         console.log(res.message || "Expense deleted");
         if (onDelete) onDelete(id); // Notify parent to remove item from state
-             onUpdate();
+        onUpdate();
       })
       .catch((error) => {
         console.error("Error deleting expense:", error);
@@ -82,6 +82,8 @@ function ExpenseList({ data, onDelete, onEdit, onUpdate }: ExpenseListProps) {
     } catch (error) {
       console.error("Error editing expense:", error);
     }
+
+    
   };
 
   return (
@@ -94,8 +96,17 @@ function ExpenseList({ data, onDelete, onEdit, onUpdate }: ExpenseListProps) {
               : item.type === "budget"
               ? categoryStyles["budget"]
               : {};
-
-          return (  
+              // Format the date
+              const formattedDate = item.date ? new Date(item.date).toLocaleString("en-US", {
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true
+            }) : "No date";
+              return (  
             
             <div
               key={item._id}
@@ -122,7 +133,9 @@ function ExpenseList({ data, onDelete, onEdit, onUpdate }: ExpenseListProps) {
                     <div className="expense-name">
                       {item.expenseName || item.category || item.type}
                     </div>
-                    <div className="expense-date">{item.date}</div>
+                    <div className="text-sm text-gray-600">
+                      {item.category} | {formattedDate}
+                    </div>
                   </div>
                   <div className="expense-amount">₱{item.amount}</div>
                 </div>
