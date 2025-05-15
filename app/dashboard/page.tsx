@@ -52,9 +52,9 @@ export default function HomePage() {
 
   return (
     <main className="p-4 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Spenxo: Expense Tracking System</h1>
+      <h1 className="text-2xl font-bold flex justify-center mt-5">Spenxo: Expense Tracking System</h1>
       <button
-        className="btn btn-primary"
+        className="btn btn-primary rounded-full mt-5 mb-5"
         onClick={() => {
           const modal = document.getElementById('my_modal_1') as HTMLDialogElement | null;
           if (modal && typeof modal.showModal === 'function') {
@@ -62,7 +62,7 @@ export default function HomePage() {
           }
         }}
       >
-        Add Expense
+        ➕ Add Expense
       </button>
 
       <dialog id="my_modal_1" className="modal">
@@ -206,7 +206,9 @@ export default function HomePage() {
                           onUpdate={fetchExpenses}
                       ></ExpenseList>
                   ) : (
-                      <div>Loading...</div>
+                    <div className="flex justify-center mt-24">
+                    <span className="loading loading-dots loading-xl"></span>
+                  </div>
                   )}
     </main>
   );
