@@ -22,9 +22,10 @@ interface ExpenseListProps {
   onDelete?: (id: string) => void; // Optional callback to update parent state
   // onEdit?: (item: ExpenseItem) => void; // You can add this if you want to enable editing
   onEdit?: (id: string) => void; // Optional callback to update parent state
+  onUpdate:() => void; // Optional callback to update parent state
 }
 
-function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
+function ExpenseList({ data, onDelete, onEdit, onUpdate }: ExpenseListProps) {
   const [editingItem, setEditingItem] = useState<ExpenseItem | null>(null);
 
   // useEffect(() => {
@@ -46,6 +47,7 @@ function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
       .then((res) => {
         console.log(res.message || "Expense deleted");
         if (onDelete) onDelete(id); // Notify parent to remove item from state
+             onUpdate();
       })
       .catch((error) => {
         console.error("Error deleting expense:", error);
@@ -74,8 +76,9 @@ function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
 
       const result = await response.json();
       console.log("Updated:", result);
+      onUpdate();
       (document.getElementById("edit_modal") as HTMLDialogElement)?.close();
-      if (onEdit) onEdit(editingItem._id);
+      if (onEdit) onEdit(result);
     } catch (error) {
       console.error("Error editing expense:", error);
     }
