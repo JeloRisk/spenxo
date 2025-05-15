@@ -42,6 +42,10 @@ export async function GET_BY_ID(req: NextRequest) {
 // }
 
 export async function POST(req: NextRequest) {
+
+  // 201 for okay, nakapost idjay database
+  // 400 for bad request
+  // 500 for server error
   const body = await req.json();
 
   // Server-side validation
