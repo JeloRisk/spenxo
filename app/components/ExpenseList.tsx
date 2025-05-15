@@ -1,6 +1,6 @@
 import "./list.css";
 import categoryStyles from "../assets/styles/categoryStyles";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Inside your component:
 
@@ -26,6 +26,12 @@ interface ExpenseListProps {
 
 function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
   const [editingItem, setEditingItem] = useState<ExpenseItem | null>(null);
+
+  // useEffect(() => {
+  //   fetch("/api/expenses")
+  //     .then((res) => res.json())
+  //     .then((data) => setExpenses(data));
+  // }, []);
   
   const handleDelete = (id: string) => {
     fetch(`/api/expenses/delete/${id}`, {
@@ -45,8 +51,6 @@ function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
         console.error("Error deleting expense:", error);
       });
   };
-
-
 
   const openEditModal = (item: ExpenseItem) => {
     setEditingItem(item);
@@ -76,7 +80,6 @@ function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
       console.error("Error editing expense:", error);
     }
   };
-   
 
   return (
     <>
@@ -89,17 +92,20 @@ function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
               ? categoryStyles["budget"]
               : {};
 
-          return (
+          return (  
+            
             <div
               key={item._id}
               className="expense-item"
               style={{ borderLeftColor: category.color || "#ccc" }}
             >
+
               <div className="expense-details">
                 <div
                   className="expense-icon-wrapper"
                   style={{ backgroundColor: category.color || "#ccc" }}
                 >
+                  
                   {category.icon && (
                     <img
                       src={category.icon}
@@ -136,82 +142,85 @@ function ExpenseList({ data, onDelete, onEdit }: ExpenseListProps) {
             </div>
           );
         })}
+        
       </div>
       {/* Edit Modal */}
-      <dialog id="edit_modal" className="bg-transparent border-none p-0">
-  <form
-    className="bg-white border border-gray-300 rounded-md p-6 w-80 flex flex-col gap-4"
-    onSubmit={(e) => {
-      e.preventDefault();
-      saveEdit();
-    }}
-  >
-    <input
-      type="text"
-      placeholder="Expense Name (Optional)"
-      value={editingItem?.expenseName || ""}
-      onChange={(e) =>
-        setEditingItem({ ...editingItem!, expenseName: e.target.value })
-      }
-      className="border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-    />
-
-    <input
-      type="number"
-      placeholder="Amount"
-      value={editingItem?.amount || ""}
-      onChange={(e) =>
-        setEditingItem({ ...editingItem!, amount: Number(e.target.value) })
-      }
-      className="border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-    />
-
-    <input
-      type="text"
-      placeholder="Category (e.g., travel, food)"
-      value={editingItem?.category || ""}
-      onChange={(e) =>
-        setEditingItem({ ...editingItem!, category: e.target.value })
-      }
-      className="border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-    />
-
-    <input
-      type="date"
-      value={editingItem?.date.split("T")[0] || ""}
-      onChange={(e) =>
-        setEditingItem({ ...editingItem!, date: e.target.value })
-      }
-      className="border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-    />
-
-    <textarea
-      placeholder="Description (optional)"
-      value={editingItem?.description || ""}
-      onChange={(e) =>
-        setEditingItem({ ...editingItem!, description: e.target.value })
-      }
-      className="border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 resize-y min-h-[60px]"
-    />
-
-    <div className="flex gap-3">
-      <button
-        type="submit"
-        className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition-colors"
-      >
-        Save
-      </button>
-      <button
-        type="button"
-        className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
-        onClick={() =>
-          (document.getElementById("edit_modal") as HTMLDialogElement)?.close()
+      <dialog id="edit_modal" className="modal">
+  <div className="modal-box">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        saveEdit();
+      }}
+      className="space-y-2 mb-6 border p-4 rounded"
+    >
+      <input
+        type="text"
+        placeholder="Expense Name (Optional)"
+        value={editingItem?.expenseName || ""}
+        onChange={(e) =>
+          setEditingItem({ ...editingItem!, expenseName: e.target.value })
         }
-      >
-        Cancel
-      </button>
-    </div>
-  </form>
+        className="w-full border px-3 py-2 rounded"
+      />
+
+      <input
+        type="number"
+        placeholder="Amount"
+        value={editingItem?.amount || ""}
+        onChange={(e) =>
+          setEditingItem({ ...editingItem!, amount: Number(e.target.value) })
+        }
+        className="w-full border px-3 py-2 rounded"
+      />
+
+      <input
+        type="text"
+        placeholder="Category (e.g., travel, food)"
+        value={editingItem?.category || ""}
+        onChange={(e) =>
+          setEditingItem({ ...editingItem!, category: e.target.value })
+        }
+        className="w-full border px-3 py-2 rounded"
+      />
+
+      <input
+        type="date"
+        value={editingItem?.date.split("T")[0] || ""}
+        onChange={(e) =>
+          setEditingItem({ ...editingItem!, date: e.target.value })
+        }
+        className="w-full border px-3 py-2 rounded"
+      />
+
+      <textarea
+        placeholder="Description (optional)"
+        value={editingItem?.description || ""}
+        onChange={(e) =>
+          setEditingItem({ ...editingItem!, description: e.target.value })
+        }
+        className="w-full border px-3 py-2 rounded"
+      />
+
+      <div className="flex gap-3">
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          onClick={() =>
+            (document.getElementById("edit_modal") as HTMLDialogElement)?.close()
+          }
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
 </dialog>
     </>
   );    
