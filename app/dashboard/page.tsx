@@ -135,8 +135,7 @@ useEffect(() => {
                   {cat}
                 </option>
               ))}
-              </select>
-
+            </select>
             <input
               type="date"
               name="date"
@@ -159,6 +158,13 @@ useEffect(() => {
                 type="button"
                 className="bg-red-600 text-white px-4 py-2 rounded"
                 onClick={() => {
+                  setForm({
+                    expenseName: "",
+                    amount: "",
+                    category: "",
+                    date: "",
+                    description: ""
+                  }); // Reset form to initial state
                   const modal = document.getElementById('my_modal_1') as HTMLDialogElement | null;
                   if (modal && typeof modal.close === 'function') {
                     modal.close();
@@ -170,59 +176,6 @@ useEffect(() => {
             </div>
           </form>
         </div>
-      </dialog>
-
-      
-
-<dialog id="my_modal_1" className="modal">
-  <div className="modal-box">
-      <form onSubmit={handleSubmit} className="space-y-2 mb-6 border p-4 rounded">
-        <input
-          type="text"
-          name="expenseName"
-          value={form.expenseName}
-          onChange={handleChange}
-          placeholder="Expense Name (Optional)"
-          className="w-full border px-3 py-2 rounded"
-        />
-        <input
-          type="number"
-          name="amount"
-          value={form.amount}
-          onChange={handleChange}
-          placeholder="Amount"
-          className="w-full border px-3 py-2 rounded"
-        />
-        <input
-          type="text"
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          placeholder="Category (e.g., travel, food)"
-          className="w-full border px-3 py-2 rounded"
-        />
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded"
-        />
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description (optional)"
-          className="w-full border px-3 py-2 rounded"
-        />
-        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
-          Add Expense
-        </button> 
-        <button type="submit" className="bg-red-600 text-white px-4 py-2 rounded">
-          Cancel
-        </button> 
-      </form>
-      </div>
       </dialog>
 
       {/* <ul className="space-y-2">
