@@ -5,10 +5,31 @@ import { Expense } from "@/models/Expense";
 
 // put specific expense by id
 // delete specific expense by id
-// method 
-export async function GET() {
+// method
+
+// without dynamic filtering
+// export async function GET() {
+//   await connectToDB();
+//   const expenses = await Expense.find({}).sort({ date: -1 });
+//   return NextResponse.json(expenses);
+// }
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const category = searchParams.get("category");
+  const date = searchParams.get("date");
+
   await connectToDB();
-  const expenses = await Expense.find({}).sort({ date: -1 });
+  let expenses;
+
+  if (category) {
+    expenses = await Expense.find({ category }).sort({ date: -1 });
+  } else if (date) {
+    expenses = await Expense.find({ date }).sort({ date: -1 });
+  } else {
+    expenses = await Expense.find({}).sort({ date: -1 });
+  }
+
   return NextResponse.json(expenses);
 }
 
