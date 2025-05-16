@@ -1,6 +1,6 @@
 import "./list.css";
 import categoryStyles from "../assets/styles/categoryStyles";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import Swal from 'sweetalert2';
 
 // Inside your component:
@@ -29,25 +29,29 @@ interface ExpenseListProps {
 
 function ExpenseList({ data, onDelete, onEdit, onUpdate, onSendCategory}: ExpenseListProps) {
   const [editingItem, setEditingItem] = useState<ExpenseItem | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedItem, setSelectedItem] = useState<ExpenseItem | null>(null); // ✅ NEW: for view modal
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedItem, setSelectedItem] = useState<ExpenseItem | null>(null); // ✅ NEW: for view modal 
+
+// 🔄 Fetch data when search term or category changes
+
+
   
 
   // dropdown filter
-  const categories = [
-  "Housing",
-  "Transportation",
-  "Food",
-  "Health & Insurance",
-  "Personal & Lifestyle",
-  "Debt Payments",
-  "Savings & Investments",
-  "Education",
-  "Children & Family",
-  "Entertainment & Recreation",
-  "Gifts & Donations",
-  "Business Expenses"
-];
+    const categories = [
+      "Housing",
+      "Transportation",
+      "Food",
+      "Health and Insurance",
+      "Personal and Lifestyle",
+      "Debt Payments",
+      "Savings and Investments",
+      "Education",
+      "Children and Family",
+      "Entertainment and Recreation",
+      "Gifts and Donations",
+      "Business Expenses"
+    ];
 useEffect(() => {
   if (onSendCategory) {
     onSendCategory(selectedCategory);
@@ -114,9 +118,6 @@ useEffect(() => {
     } catch (error) {
       console.error("Error updating expense:", error);
     }
-
-    // Removed invalid hook and categories logic from here
-
   };
 
   return (
@@ -138,12 +139,7 @@ useEffect(() => {
       </div>
       <div className="max-h-[500px] overflow-y-auto pr-2">
               {data
-          // .filter(
-          //   (item) =>
-          //     selectedCategory === "All" ||
-          //     (item.category && item.category === selectedCategory)
-          // )
-    .map((item) => {
+        .map((item) => {
           const category: { color?: string; icon?: string } =
             item.type === "expense"
               ? categoryStyles[item.category_id as keyof typeof categoryStyles] || {}
@@ -159,16 +155,14 @@ useEffect(() => {
               hour: "2-digit",
               minute: "2-digit",
               hour12: true
-            }) : "No date";
-              return (  
-            
+            }) : "No date";         
+            return (             
             <div
               key={item._id}
               className="expense-item"
               style={{ borderLeftColor: category.color || "#ccc" }}
               onClick={() => openDetailsModal(item)} // ✅ NEW: click opens view modal
             >
-
               <div className="expense-details">
                 <div
                   className="expense-icon-wrapper"
@@ -227,6 +221,7 @@ useEffect(() => {
                   🗑️ Delete
                 </button>
               </div>
+              
             </div>
           );
         })}
@@ -359,6 +354,7 @@ useEffect(() => {
     </div>
   </div>
 </dialog>
+
 
     </>
   );    
