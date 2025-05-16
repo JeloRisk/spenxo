@@ -1,6 +1,7 @@
 import "./list.css";
 import categoryStyles from "../assets/styles/categoryStyles";
 import React, { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 // Inside your component:
 
@@ -30,6 +31,7 @@ interface ExpenseListProps {
 function ExpenseList({ data, onDelete, onEdit, onUpdate, onSendCategory, category }: ExpenseListProps) {
   const [editingItem, setEditingItem] = useState<ExpenseItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  
 
   // dropdown filter
   const categories = [
@@ -115,13 +117,12 @@ useEffect(() => {
     <>
        {/* Filter Dropdown */}
       <div className="filter-section mb-4">
-        <label className="mr-2 font-medium">Select Category:</label>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           className="border px-3 py-2 rounded"
         >
-          <option value="All">All</option>
+          <option value="All">All Category</option>
           {categories.map((cat) => (
         <option key={cat} value={cat}>
           {cat}
@@ -194,9 +195,22 @@ useEffect(() => {
                 >
                   ✏️ Edit
                 </button>
-
                 <button
-                  onClick={() => handleDelete(item._id)}
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#d33',
+                      cancelButtonColor: '#3085d6',
+                      confirmButtonText: 'Yes!',
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleDelete(item._id);
+                        Swal.fire('Item deleted successfully!');
+                      }
+                    });
+                  }}
                   className="flex items-center gap-1 hover:bg-red-600 text-white text-sm font-medium py-1 px-3 rounded transition-colors duration-200"
                 >
                   🗑️ Delete
@@ -237,16 +251,24 @@ useEffect(() => {
         className="w-full border px-3 py-2 rounded"
       />
 
-      <input
-        type="text"
-        placeholder="Category (e.g., travel, food)"
+      <select
+        name="category"
         value={editingItem?.category || ""}
         onChange={(e) =>
           setEditingItem({ ...editingItem!, category: e.target.value })
         }
         className="w-full border px-3 py-2 rounded"
-      />
-
+        required
+      >
+        <option value="" disabled hidden>
+        Select Category
+        </option>
+        {categories.map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
       <input
         type="date"
         value={editingItem?.date.split("T")[0] || ""}
