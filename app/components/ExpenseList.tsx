@@ -23,10 +23,34 @@ interface ExpenseListProps {
   // onEdit?: (item: ExpenseItem) => void; // You can add this if you want to enable editing
   onEdit?: (id: string) => void; // Optional callback to update parent state
   onUpdate:() => void; // Optional callback to update parent state
+  onSendCategory?: (category: string) => void; // Optional callback to send category
+  category?: string; // Optional category prop
 }
 
-function ExpenseList({ data, onDelete, onEdit, onUpdate }: ExpenseListProps) {
+function ExpenseList({ data, onDelete, onEdit, onUpdate, onSendCategory, category }: ExpenseListProps) {
   const [editingItem, setEditingItem] = useState<ExpenseItem | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  // dropdown filter
+  const categories = [
+  "Housing",
+  "Transportation",
+  "Food",
+  "Health & Insurance",
+  "Personal & Lifestyle",
+  "Debt Payments",
+  "Savings & Investments",
+  "Education",
+  "Children & Family",
+  "Entertainment & Recreation",
+  "Gifts & Donations",
+  "Business Expenses"
+];
+useEffect(() => {
+  if (onSendCategory) {
+    onSendCategory(selectedCategory);
+  }
+}, [selectedCategory, onSendCategory]);
 
   // useEffect(() => {
   //   fetch("/api/expenses")
@@ -80,16 +104,39 @@ function ExpenseList({ data, onDelete, onEdit, onUpdate }: ExpenseListProps) {
       (document.getElementById("edit_modal") as HTMLDialogElement)?.close();
       if (onEdit) onEdit(result);
     } catch (error) {
-      console.error("Error editing expense:", error);
     }
+
+    // Removed invalid hook and categories logic from here
 
     
   };
 
   return (
     <>
+       {/* Filter Dropdown */}
+      <div className="filter-section mb-4">
+        <label className="mr-2 font-medium">Select Category:</label>
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="border px-3 py-2 rounded"
+        >
+          <option value="All">All</option>
+          {categories.map((cat) => (
+        <option key={cat} value={cat}>
+          {cat}
+        </option>
+          ))}
+        </select>
+      </div>
       <div className="expense-list">
-        {data.map((item) => {
+              {data
+          // .filter(
+          //   (item) =>
+          //     selectedCategory === "All" ||
+          //     (item.category && item.category === selectedCategory)
+          // )
+    .map((item) => {
           const category: { color?: string; icon?: string } =
             item.type === "expense"
               ? categoryStyles[item.category_id as keyof typeof categoryStyles] || {}
