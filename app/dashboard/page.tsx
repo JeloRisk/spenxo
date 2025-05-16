@@ -28,8 +28,6 @@ export default function HomePage() {
   "Business Expenses"
 ];
 
-  
-
   /**
    * Fetches expenses from the `/api/expenses` endpoint with an empty category filter,
    * parses the JSON response, and updates the expenses state using `setExpenses`.
@@ -177,31 +175,14 @@ useEffect(() => {
           </form>
         </div>
       </dialog>
-
-      {/* <ul className="space-y-2">
-        {expenses.map((exp: any) => (
-          <li key={exp._id} className="border p-2 rounded">
-            <div className="font-medium">
-              {exp.expenseName} — ${exp.amount.toFixed(2)}
-            </div>
-            <div className="text-sm text-gray-600">
-              {exp.category} | {new Date(exp.date).toLocaleDateString()}
-            </div>
-            {exp.description && (
-              <p className="text-xs italic text-gray-500 mt-1">{exp.description}</p>
-            )}
-          </li>
-        ))}
-      </ul> */}
-                   <ExpenseList
-                          data={expenses}
-                          // viewItem={handleView}
-                          onUpdate={fetchExpenses}
-                          onSendCategory={(newCategory: string) => {
-                              setSelectedCategory(newCategory);
-                          }}
-                          category={selectedCategory}
-                      ></ExpenseList>
+        <ExpenseList
+        data={expenses}
+        // viewItem={handleView}
+          onUpdate={fetchExpenses}
+          onSendCategory={(newCategory: string) => {
+          setSelectedCategory(newCategory); }}
+            category={selectedCategory}
+        ></ExpenseList>                     
                   {/* {expenses.length != 0 ? (
                       // create newe component
                       <ExpenseList
