@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 // Inside your component:
 
 
-
 interface ExpenseItem {
   _id: string;
   type: "expense" | "budget";
@@ -28,9 +27,10 @@ interface ExpenseListProps {
   category?: string; // Optional category prop
 }
 
-function ExpenseList({ data, onDelete, onEdit, onUpdate, onSendCategory, category }: ExpenseListProps) {
+function ExpenseList({ data, onDelete, onEdit, onUpdate, onSendCategory}: ExpenseListProps) {
   const [editingItem, setEditingItem] = useState<ExpenseItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedItem, setSelectedItem] = useState<ExpenseItem | null>(null); // ✅ NEW: for view modal
   
 
   // dropdown filter
@@ -85,6 +85,12 @@ useEffect(() => {
     const modal = document.getElementById("edit_modal") as HTMLDialogElement;
     if (modal) modal.showModal();
   };
+// ✅ NEW: Opens the view details modal
+  const openDetailsModal = (item: ExpenseItem) => {
+    setSelectedItem(item);
+    const modal = document.getElementById("details_modal") as HTMLDialogElement;
+    if (modal) modal.showModal();
+  };
 
   const saveEdit = async () => {
     if (!editingItem) return;
@@ -106,11 +112,11 @@ useEffect(() => {
       (document.getElementById("edit_modal") as HTMLDialogElement)?.close();
       if (onEdit) onEdit(result);
     } catch (error) {
+      console.error("Error updating expense:", error);
     }
 
     // Removed invalid hook and categories logic from here
 
-    
   };
 
   return (
@@ -130,7 +136,7 @@ useEffect(() => {
           ))}
         </select>
       </div>
-      <div className="expense-list">
+      <div className="max-h-[500px] overflow-y-auto pr-2">
               {data
           // .filter(
           //   (item) =>
@@ -160,6 +166,7 @@ useEffect(() => {
               key={item._id}
               className="expense-item"
               style={{ borderLeftColor: category.color || "#ccc" }}
+              onClick={() => openDetailsModal(item)} // ✅ NEW: click opens view modal
             >
 
               <div className="expense-details">
@@ -190,13 +197,17 @@ useEffect(() => {
               </div>
               <div className="expense-item-buttons mt-2 flex gap-2 justify-end">
                   <button
-                  onClick={() => openEditModal(item)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // ✅ prevent triggering view modal
+                    openEditModal(item);
+                  }}
                   className="flex items-center gap-1 hover:bg-green-600 text-white text-sm font-medium py-1 px-3 rounded transition-colors duration-200"
                 >
                   ✏️ Edit
                 </button>
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation(); 
                     Swal.fire({
                       title: 'Are you sure?',
                       icon: 'warning',
@@ -307,6 +318,48 @@ useEffect(() => {
     </form>
   </div>
 </dialog>
+<dialog id="details_modal" className="modal">
+  <div className="modal-box">
+    <h3 className="text-lg font-bold mb-4">🧾 Expense Details</h3>
+    {selectedItem && (
+      <div className="overflow-x-auto">
+        <table className="table w-full border border-gray-200 rounded">
+          <tbody>
+            <tr className="border-b">
+              <td className="font-semibold py-2 px-3 bg-gray-50">Name</td>
+              <td className="py-2 px-3">{selectedItem.expenseName || "-"}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="font-semibold py-2 px-3 bg-gray-50">Amount</td>
+              <td className="py-2 px-3 text-red-600 font-semibold">₱{selectedItem.amount.toFixed(2)}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="font-semibold py-2 px-3 bg-gray-50">Category</td>
+              <td className="py-2 px-3">{selectedItem.category}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="font-semibold py-2 px-3 bg-gray-50">Date</td>
+              <td className="py-2 px-3">{new Date(selectedItem.date).toLocaleString()}</td>
+            </tr>
+            <tr>
+              <td className="font-semibold py-2 px-3 bg-gray-50">Description</td>
+              <td className="py-2 px-3">{selectedItem.description || "No description"}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )}
+    <div className="modal-action mt-4">
+      <button
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        onClick={() => (document.getElementById("details_modal") as HTMLDialogElement)?.close()}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</dialog>
+
     </>
   );    
 }
