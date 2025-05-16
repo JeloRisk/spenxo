@@ -12,17 +12,50 @@ export default function HomePage() {
     date: "",
     description: ""
   });
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const categories = [
+  "Housing",
+  "Transportation",
+  "Food",
+  "Health & Insurance",
+  "Personal & Lifestyle",
+  "Debt Payments",
+  "Savings & Investments",
+  "Education",
+  "Children & Family",
+  "Entertainment & Recreation",
+  "Gifts & Donations",
+  "Business Expenses"
+];
 
+  
 
+  /**
+   * Fetches expenses from the `/api/expenses` endpoint with an empty category filter,
+   * parses the JSON response, and updates the expenses state using `setExpenses`.
+   */
   const fetchExpenses = () => {
-    fetch("/api/expenses")
+    fetch("/api/expenses?category=")
       .then(res => res.json())
       .then(data => setExpenses(data));
   };
-
+//This code runs the fetchExpenses function once, right after the page loads.
   useEffect(() => {
     fetchExpenses();
   }, []);
+
+  //This function runs every time the selected category changes. It fetches expense data for that category from the server and updates the list of expenses, while also logging the selected category to the console.
+useEffect(() => {
+  const url = selectedCategory && selectedCategory !== "All"
+    ? `/api/expenses?category=${selectedCategory}`
+    : "/api/expenses";
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => setExpenses(data));
+
+  console.log("Selected Category:", selectedCategory);
+}, [selectedCategory]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -76,7 +109,7 @@ export default function HomePage() {
               name="expenseName"
               value={form.expenseName}
               onChange={handleChange}
-              placeholder="Expense Name (Optional)"
+              placeholder="Expense Name"
               className="w-full border px-3 py-2 rounded"
             />
             <input
@@ -87,14 +120,23 @@ export default function HomePage() {
               placeholder="Amount"
               className="w-full border px-3 py-2 rounded"
             />
-            <input
-              type="text"
+            <select
               name="category"
               value={form.category}
-              onChange={handleChange}
-              placeholder="Category (e.g., travel, food)"
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
               className="w-full border px-3 py-2 rounded"
-            />
+              required
+            >
+              <option value="" disabled hidden>
+                Select Category
+              </option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+              </select>
+
             <input
               type="date"
               name="date"
@@ -198,18 +240,31 @@ export default function HomePage() {
           </li>
         ))}
       </ul> */}
-                  {expenses.length != 0 ? (
+                   <ExpenseList
+                          data={expenses}
+                          // viewItem={handleView}
+                          onUpdate={fetchExpenses}
+                          onSendCategory={(newCategory: string) => {
+                              setSelectedCategory(newCategory);
+                          }}
+                          category={selectedCategory}
+                      ></ExpenseList>
+                  {/* {expenses.length != 0 ? (
                       // create newe component
                       <ExpenseList
                           data={expenses}
                           // viewItem={handleView}
                           onUpdate={fetchExpenses}
+                          onSendCategory={(newCategory: string) => {
+                              setSelectedCategory(newCategory);
+                          }}
+                          category={selectedCategory}
                       ></ExpenseList>
                   ) : (
                     <div className="flex justify-center mt-24">
                     <span className="loading loading-dots loading-xl"></span>
                   </div>
-                  )}
+                  )} */}
     </main>
   );
 }
