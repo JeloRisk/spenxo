@@ -14,19 +14,19 @@ export default function HomePage() {
   });
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const categories = [
-  "Housing",
-  "Transportation",
-  "Food",
-  "Health & Insurance",
-  "Personal & Lifestyle",
-  "Debt Payments",
-  "Savings & Investments",
-  "Education",
-  "Children & Family",
-  "Entertainment & Recreation",
-  "Gifts & Donations",
-  "Business Expenses"
-];
+      "Housing",
+      "Transportation",
+      "Food",
+      "Health and Insurance",
+      "Personal and Lifestyle",
+      "Debt Payments",
+      "Savings and Investments",
+      "Education",
+      "Children and Family",
+      "Entertainment and Recreation",
+      "Gifts and Donations",
+      "Business Expenses"
+    ];
 
   /**
    * Fetches expenses from the `/api/expenses` endpoint with an empty category filter,
@@ -182,23 +182,8 @@ useEffect(() => {
           onSendCategory={(newCategory: string) => {
           setSelectedCategory(newCategory); }}
             category={selectedCategory}
-        ></ExpenseList>                     
-                  {/* {expenses.length != 0 ? (
-                      // create newe component
-                      <ExpenseList
-                          data={expenses}
-                          // viewItem={handleView}
-                          onUpdate={fetchExpenses}
-                          onSendCategory={(newCategory: string) => {
-                              setSelectedCategory(newCategory);
-                          }}
-                          category={selectedCategory}
-                      ></ExpenseList>
-                  ) : (
-                    <div className="flex justify-center mt-24">
-                    <span className="loading loading-dots loading-xl"></span>
-                  </div>
-                  )} */}
+        ></ExpenseList>     
     </main>
+
   );
 }
