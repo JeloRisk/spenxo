@@ -17,7 +17,8 @@
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "spenxo": "file:"
+    "spenxo": "file:",
+    "sweetalert2": "^11.21.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
