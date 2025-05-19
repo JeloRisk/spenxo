@@ -16,19 +16,25 @@ import { Expense } from "@/models/Expense";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const category = searchParams.get("category");
-  const date = searchParams.get("date");
+  const category = searchParams.get("category") || undefined;
+  const expenseName = searchParams.get("expenseName") || undefined;
+  const search = searchParams.get("search") || undefined;
+
 
   await connectToDB();
-  let expenses;
 
-  if (category) {
-    expenses = await Expense.find({ category }).sort({ date: -1 });
-  } else if (date) {
-    expenses = await Expense.find({ date }).sort({ date: -1 });
-  } else {
-    expenses = await Expense.find({}).sort({ date: -1 });
+  // Build filter object dynamically
+  const filter: any = {}; 
+  if (category) filter.category = category;
+  if (expenseName) filter.expenseName = expenseName;
+  if (search) {
+    filter.$or = [
+      { expenseName: { $regex: search, $options: "i" } },
+      { category: { $regex: search, $options: "i" } },
+    ];
   }
+
+  const expenses = await Expense.find(filter).sort({ date: -1 });
 
   return NextResponse.json(expenses);
 }
