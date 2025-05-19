@@ -5,6 +5,8 @@ import ExpenseList from "../components/ExpenseList";
 
 export default function HomePage() {
   const [expenses, setExpenses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+    const [datePicker, setDatePicker] = useState("");
   const [form, setForm] = useState({
     expenseName: "",
     amount: "",
@@ -32,8 +34,9 @@ export default function HomePage() {
    * Fetches expenses from the `/api/expenses` endpoint with an empty category filter,
    * parses the JSON response, and updates the expenses state using `setExpenses`.
    */
-  const fetchExpenses = () => {
-    fetch("/api/expenses?category=")
+  const fetchExpenses = (searchQuery="") => {
+    const queryParams = searchQuery ? `?name=${encodeURIComponent(searchQuery)}` : "";
+    fetch(`/api/expenses${queryParams}`)
       .then(res => res.json())
       .then(data => setExpenses(data));
   };
@@ -42,18 +45,28 @@ export default function HomePage() {
     fetchExpenses();
   }, []);
 
+  //   useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     fetchExpenses(searchTerm);
+  //   }, 300); // delay for smoother UX
+
+  //   return () => clearTimeout(timeout); // debounce to avoid excessive calls
+  // }, [searchTerm]);
+
   //This function runs every time the selected category changes. It fetches expense data for that category from the server and updates the list of expenses, while also logging the selected category to the console.
 useEffect(() => {
+  console.log("Selected Category:", searchTerm);
+  
   const url = selectedCategory && selectedCategory !== "All"
-    ? `/api/expenses?category=${selectedCategory}`
-    : "/api/expenses";
+    ? `/api/expenses?category=${selectedCategory}&search=${searchTerm}`
+    : `/api/expenses?search=${searchTerm}&date=${datePicker}`;
 
   fetch(url)
     .then(res => res.json())
     .then(data => setExpenses(data));
 
   console.log("Selected Category:", selectedCategory);
-}, [selectedCategory]);
+}, [selectedCategory, searchTerm, datePicker]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -95,6 +108,22 @@ useEffect(() => {
       >
         ➕ Add Expense
       </button>
+      <div className="flex items-center gap-2 mb-4">
+        <input
+        type="text"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="flex-1 border px-3 py-2 rounded"        
+        />
+      </div>
+                  <input
+              type="date"
+              name="date"
+              value={datePicker}
+        onChange={(e) => setDatePicker(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            />
 
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
