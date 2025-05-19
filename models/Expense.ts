@@ -6,6 +6,6 @@ const ExpenseSchema = new mongoose.Schema({
   category: String,
   date: { type: Date, default: Date.now },
   description: String
-});
+},{timestamps: true });
 
 export const Expense = mongoose.models.Expense || mongoose.model("Expense", ExpenseSchema);
