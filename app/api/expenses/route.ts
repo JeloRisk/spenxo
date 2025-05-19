@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const category = searchParams.get("category") || undefined;
   const expenseName = searchParams.get("expenseName") || undefined;
+  const date = searchParams.get("date") || undefined;
   const search = searchParams.get("search") || undefined;
 
 
@@ -27,6 +28,7 @@ export async function GET(req: NextRequest) {
   const filter: any = {}; 
   if (category) filter.category = category;
   if (expenseName) filter.expenseName = expenseName;
+  if (date) filter.date = date;
   if (search) {
     filter.$or = [
       { expenseName: { $regex: search, $options: "i" } },
