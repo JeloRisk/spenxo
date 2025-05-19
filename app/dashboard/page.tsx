@@ -6,7 +6,8 @@ import ExpenseList from "../components/ExpenseList";
 export default function HomePage() {
   const [expenses, setExpenses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-    const [datePicker, setDatePicker] = useState("");
+  const [datePicker, setDatePicker] = useState("");
+  
   const [form, setForm] = useState({
     expenseName: "",
     amount: "",
@@ -117,7 +118,7 @@ useEffect(() => {
         className="flex-1 border px-3 py-2 rounded"        
         />
       </div>
-                  <input
+        <input
               type="date"
               name="date"
               value={datePicker}
