@@ -57,11 +57,11 @@ return (
         className="flex-1 border px-3 py-2 rounded"        
         />
         <button
-        onClick={() => fetchExpenses(searchTerm)}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Search
-      </button>
+          onClick={() => fetchExpenses(searchTerm)}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Search
+        </button>
         
       </div>
       <form onSubmit={handleSubmit} className="space-y-2 mb-6 border p-4 rounded">
