@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     ];
   }
 
-  const expenses = await Expense.find(filter).sort({ date: -1 });
+  const expenses = await Expense.find(filter).sort({ createdAt: -1 });
 
   return NextResponse.json(expenses);
 }
