@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 
+
 export default function HomePage() {
   const [expenses, setExpenses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [form, setForm] = useState({
     expenseName: "",
     amount: "",
@@ -12,8 +14,9 @@ export default function HomePage() {
     description: ""
   });
 
-  const fetchExpenses = () => {
-    fetch("/api/expenses")
+  const fetchExpenses = (searchQuery="") => {
+    const queryParams = (searchQuery) ? `?name=${encodeURIComponent(searchQuery)}` : "";
+    fetch(`/api/expenses${queryParams}`)
       .then(res => res.json())
       .then(data => setExpenses(data));
   };
@@ -40,12 +43,27 @@ export default function HomePage() {
     });
     setForm({ expenseName: "", amount: "", category: "", date: "", description: "" });
     fetchExpenses();
-  };
+};
 
-  return (
-    <main className="p-4 max-w-xl mx-auto">
+return (
+  <main className="p-4 max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">ExpenseTrackr</h1>
-
+      <div className="flex items-center gap-2 mb-4">
+        <input
+        type="text"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="flex-1 border px-3 py-2 rounded"        
+        />
+        <button
+        onClick={() => fetchExpenses(searchTerm)}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Search
+      </button>
+        
+      </div>
       <form onSubmit={handleSubmit} className="space-y-2 mb-6 border p-4 rounded">
         <input
           type="text"
