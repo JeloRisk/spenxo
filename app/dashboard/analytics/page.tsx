@@ -66,7 +66,7 @@ function ExpenseCharts({ data }: { data: any[] }) {
     <div className="mt-6">
       <div className="grid md:grid-cols-2 gap-8">
         {/* Pie Chart */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg border">
+        <div className="bg-white p-6 rounded-2xl border">
           <h3 className="font-semibold text-lg mb-4">Spending by Category</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -90,7 +90,7 @@ function ExpenseCharts({ data }: { data: any[] }) {
           </ResponsiveContainer>
         </div>
         {/* Bar Chart */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg border">
+        <div className="bg-white p-6 rounded-2xl border">
           <h3 className="font-semibold text-lg mb-4">Monthly Spending</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={barData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
@@ -115,7 +115,7 @@ function ExpenseCharts({ data }: { data: any[] }) {
         </div>
 
         {/* Line Chart (spans both columns) */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg border md:col-span-2" style={{ height: 500 }}>
+        <div className="bg-white p-6 rounded-2xl border md:col-span-2" style={{ height: 500 }}>
           <h3 className="font-semibold text-lg mb-4">Spending Over Time</h3>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
