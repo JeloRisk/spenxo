@@ -129,12 +129,12 @@ useEffect(() => {
         />
       </div>
         <input
-              type="date"
-              name="date"
-              value={datePicker}
+        type="date"
+        name="date"
+        value={datePicker}
         onChange={(e) => setDatePicker(e.target.value)}
-              className="w-full border px-3 py-2 rounded mb-3"
-            />
+        className="border rounded px-2 py-1 text-sm mb-5"
+        />
 
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
