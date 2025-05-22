@@ -66,10 +66,10 @@ function ExpenseCharts({ data }: { data: any[] }) {
     <div className="mt-6">
       <div className="grid md:grid-cols-2 gap-8">
         {/* Pie Chart */}
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-medium mb-2">Spending by Category</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-lg border">
+          <h3 className="font-semibold text-lg mb-4">Spending by Category</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <PieChart>
               <Pie
                 data={pieData}
                 dataKey="value"
@@ -77,7 +77,7 @@ function ExpenseCharts({ data }: { data: any[] }) {
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={false}
+                innerRadius={50}
                 labelLine={false}
               >
                 {pieData.map((entry, index) => (
@@ -85,14 +85,13 @@ function ExpenseCharts({ data }: { data: any[] }) {
                 ))}
               </Pie>
               <Tooltip />
-              <Legend layout="horizontal" verticalAlign="bottom" />
+              <Legend iconType="circle" layout="horizontal" verticalAlign="bottom" />
             </PieChart>
           </ResponsiveContainer>
         </div>
-
         {/* Bar Chart */}
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-medium mb-2">Monthly Spending</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-lg border">
+          <h3 className="font-semibold text-lg mb-4">Monthly Spending</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={barData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -105,20 +104,25 @@ function ExpenseCharts({ data }: { data: any[] }) {
               />
               <YAxis />
               <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8" />
+              <Legend iconType="circle" />
+              <Bar dataKey="value">
+                {barData.map((entry, index) => (
+                  <Cell key={`bar-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Line Chart (spans both columns) */}
-        <div className="bg-white p-4 rounded shadow md:col-span-2" style={{ height: 500 }}>
-          <h3 className="font-medium mb-2">Spending Over Time</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-lg border md:col-span-2" style={{ height: 500 }}>
+          <h3 className="font-semibold text-lg mb-4">Spending Over Time</h3>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={sortedLineData}
               margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
             >
+              <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="date"
                 tickFormatter={(tick) => {
@@ -146,8 +150,19 @@ function ExpenseCharts({ data }: { data: any[] }) {
                   });
                 }}
               />
-              <Line type="monotone" dataKey="amount" stroke="#82ca9d" />
-              <Legend />
+              <Line
+                type="monotone"
+                dataKey="amount"
+                stroke="#82ca9d"
+                name="Amount" 
+              />
+
+              <Legend
+                verticalAlign="top"
+                align="center"
+                iconType="circle"
+                wrapperStyle={{ paddingBottom: '20px' }}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
