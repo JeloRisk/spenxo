@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import ExpenseList from "../components/ExpenseList";
+import Link from "next/link"; 
+// import ExpenseCharts from "../components/ExpenseCharts";
 
 export default function HomePage() {
   const [expenses, setExpenses] = useState([]);
@@ -97,9 +99,10 @@ useEffect(() => {
 
   return (
     <main className="p-4 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold flex justify-center mt-5">Spenxo: Expense Tracking System</h1>
+      <h1 className="text-2xl font-bold flex justify-center mb-10">Spenxo: Expense Tracking System</h1>
+      <div className="flex justify-between items-center mb-5">
       <button
-        className="btn btn-primary rounded-full mt-5 mb-5"
+        className="btn btn-primary rounded-full"
         onClick={() => {
           const modal = document.getElementById('my_modal_1') as HTMLDialogElement | null;
           if (modal && typeof modal.showModal === 'function') {
@@ -109,6 +112,13 @@ useEffect(() => {
       >
         ➕ Add Expense
       </button>
+
+      <Link href="/dashboard/analytics">
+        <button className="btn btn-primary rounded-full">
+          View Analytics
+        </button>
+      </Link>
+    </div>
       <div className="flex items-center gap-2 mb-4">
         <input
         type="text"
@@ -123,7 +133,7 @@ useEffect(() => {
               name="date"
               value={datePicker}
         onChange={(e) => setDatePicker(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded mb-3"
             />
 
       <dialog id="my_modal_1" className="modal">
@@ -212,7 +222,8 @@ useEffect(() => {
           onSendCategory={(newCategory: string) => {
           setSelectedCategory(newCategory); }}
             category={selectedCategory}
-        ></ExpenseList>     
+        />
+        {/* <ExpenseCharts data={expenses} />      */}
     </main>
 
   );
